@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatMan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 20px;
+      background: #121212;
+      color: #ffffff;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-family: 'Dancing Script', cursive;
+      font-size: 28px;
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+    }
+
+    .author {
+      font-size: 11px;
+      color: #a3a3a3;
+      font-weight: 500;
+    }
+
+    .version {
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 12px;
+      color: #e5e5e5;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: #a3a3a3;
+      margin: 0 0 24px 0;
+      line-height: 1.5;
+    }
+
+    .status-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
+      50% { box-shadow: 0 0 16px rgba(34, 197, 94, 0.8); }
+      100% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
+    }
+
+    .status-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: #f5f5f5;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #737373;
+      line-height: 1.4;
+    }
+
+    /* --- New Feedback Section --- */
+    .feedback-section {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      text-align: center;
+      font-size: 11px;
+      color: #888;
+    }
+
+    .feedback-section a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .feedback-section a:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <img src="../icons/icons-128.png" alt="ChatMan Logo" class="logo">
+      <div class="brand-container">
+        <h1 class="brand">ChatManager</h1>
+        <span class="author">by Priya</span>
+      </div>
+    </div>
+    <span class="version">v1.0</span>
+  </div>
+  
+  <p class="tagline">Revamp your AI use experience with ChatMan</p>
+  
+  <!-- <div class="status-card">
+    <div class="indicator"></div>
+    <span class="status-text">Monitoring Gemini Chat</span>
+  </div> -->
+  
+  <div class="footer">
+    v1.0: Scroll on the dial to access your prior chats & download complete chat history
+  </div>
+
+  <div class="feedback-section">
+    Feedback or feature requests? <br>
+    <a href="mailto:priyanemani1101@gmail.com" target="_blank">priyanemani1101@gmail.com</a>
+  </div>
+
+</body>
+</html>
+
+<!--
+
+// }, {
+    //   "matches": ["*://chatgpt.com/c/*"],
+    //   "js": ["content/utils/logger.js", "content/utils/initial.js", "content/content-chatgpt.js"],
+    //   "css": ["content/content.css"]
+    // }
+
+    {
+      "matches": ["*://claude.ai/chat/*"],
+      "js": ["content/utils/logger.js", "content/utils/initial.js", "content/content-claude.js"],
+      "css": ["content/content.css"]
+    }
+-->

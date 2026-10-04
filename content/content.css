@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+/* --- The Main Dialer Container --- */
+
+
+#promptnav-wrapper {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    /* We use variables so JS can resize it dynamically based on chat length */
+    width: var(--container-size, 200px);
+    height: var(--container-size, 400px);
+    z-index: 9999;
+    pointer-events: none; /* Lets clicks pass through the invisible corners */
+}
+
+/* --- The Rotating Wheel --- */
+#promptnav-wheel {
+    position: absolute;
+    top: 50%;
+    right: 0; /* Center of the wheel is exactly on the right edge */
+    width: calc(var(--container-size, 400px) * 2);
+    height: calc(var(--container-size, 400px) * 2);
+    transform: translate(50%, -50%) rotate(var(--wheel-rot, 0deg));
+    border-radius: 50%;
+    pointer-events: auto; /* Re-enable pointer for the wheel */
+    transition: transform 0.1s linear; /* Smooth scrolling */
+}
+
+/* --- The Dials --- */
+.promptnav-dial-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 
+       THE MAGIC: 
+       1. Rotate to its spot on the circle (var(--angle))
+       2. Push it out to the edge (var(--radius))
+       3. Counter-rotate it against BOTH its own angle and the wheel's current rotation so it stays upright
+    */
+    transform: translate(-50%, -50%) 
+               rotate(var(--angle)) 
+               translateX(calc(-1 * var(--radius))) 
+               rotate(calc(-1 * (var(--angle) + var(--wheel-rot, 0deg))));
+}
+
+/* --- The Dials (Scaled by 0.75) --- */
+.promptnav-dial-inner {
+    /* Driven dynamically by JS variables with fallbacks */
+    width: var(--dial-size, 33px);
+    height: var(--dial-size, 33px);
+    font-size: var(--font-size, 12px);
+    letter-spacing: var(--letter-spacing, 0px);
+
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid #ffffff;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s ease;
+}
+
+.promptnav-dial-inner:hover {
+    transform: scale(1.25);
+    background: rgba(60, 130, 246, 0.85);
+    border-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* --- The Rotary Inner Wheel Rim --- */
+#promptnav-wheel::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* Dynamically stays just inside the dial track regardless of dial size */
+    width: calc((var(--container-size, 200px) * 2) - (var(--dial-size, 33px) * 2) - 8px);
+    height: calc((var(--container-size, 200px) * 2) - (var(--dial-size, 33px) * 2) - 8px);
+    
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    pointer-events: none;
+}
+
+/* --- The Floating Tooltip --- */
+#promptnav-tooltip {
+    position: fixed;
+    background: rgba(15, 15, 15, 0.9);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+    max-width: 220px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10000;
+    /* Ellipsis magic for multiple lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#promptnav-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-10px); /* Small slide-in effect */
+}
+
+#promptnav-brand {
+    position: absolute;
+    top: 15%;
+    right: 3px; /* Tucks it nicely against the right edge */
+    
+    /* Native vertical writing mode */
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    /* transform: translateY(50%);      */
+    font-family: 'Dancing Script', cursive;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 2px;
+    font-weight: bolder;
+    text-decoration: underline;
+    
+    /* Adds a glowing drop-shadow so it is readable over chat text */
+    text-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 20px rgba(60, 130, 246, 0.5);
+    
+    pointer-events: none; /* Ensures it doesn't block the scroll wheel */
+    z-index: 10;
+}
+
+#promptnav-utilities {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    
+    /* Matches the exact dimensions of the inner wheel rim */
+    width: calc((var(--container-size, 200px) * 2) - (var(--dial-size, 35px) * 2) - 8px);
+    height: calc((var(--container-size, 200px) * 2) - (var(--dial-size, 35px) * 2) - 8px);
+    
+    transform: translate(50%, -50%);
+    border-radius: 50%;
+    pointer-events: none; /* Lets scroll events pass through to the wheel */
+    z-index: 20;
+}
+
+.promptnav-utility-btn {
+    position: absolute;
+    
+    /* Pins it exactly to the left-most edge (9 o'clock) of the inner track */
+    top: 50%;
+    left: 20px;
+    transform: translate(-50%, -50%);
+    
+    width: 15px;
+    height: 15px;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto; /* Re-enables clicking for the button */
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.promptnav-utility-btn svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    margin-top: 1px; /* Optical centering for the download arrow */
+}
+
+.promptnav-utility-btn:hover {
+    background: rgba(34, 197, 94, 0.85); /* distinct green action color */
+    border-color: #ffffff;
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+}
